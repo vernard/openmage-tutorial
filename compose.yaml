@@ -1,0 +1,35 @@
+services:
+  php:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/app
+    environment:
+      PHP_SENDMAIL_PATH: "'/usr/sbin/mhsendmail --smtp-addr=mailhog:1025'"
+
+  mysql:
+    image: mariadb
+    ports:
+      - "3306:3306"
+    environment:
+        MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: 1
+    volumes:
+      - dbdata:/var/lib/mysql
+
+  pma:
+    image: phpmyadmin
+    ports:
+      - "1080:80"
+    environment:
+      PMA_HOST: mysql
+
+  mailhog:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - "8080:8025"
+
+volumes:
+  dbdata:
