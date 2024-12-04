@@ -10,6 +10,18 @@ services:
     environment:
       PHP_SENDMAIL_PATH: "'/usr/sbin/mhsendmail --smtp-addr=mailhog:1025'"
 
+  # This runs `composer install` upon starting the container
+  composer:
+    image: webdevops/php-apache-dev:8.3
+    volumes:
+      - ./src:/app
+    depends_on:
+      - php
+    restart: "no"
+    working_dir: /app
+    command: >
+      sh -c "composer install --ignore-platform-reqs &&
+             chown application:application . -R"
   mysql:
     image: mariadb
     ports:
