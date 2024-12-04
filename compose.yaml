@@ -9,6 +9,7 @@ services:
       - ./src:/app
     environment:
       PHP_SENDMAIL_PATH: "'/usr/sbin/mhsendmail --smtp-addr=mailhog:1025'"
+      MAGE_IS_DEVELOPER_MODE: true # Added this so error messages will show up.
 
   # This runs `composer install` upon starting the container
   composer:
